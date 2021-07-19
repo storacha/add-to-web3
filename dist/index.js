@@ -28707,7 +28707,7 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 const { filesFromPath } = __nccwpck_require__(5090)
-const Web3Storage = __nccwpck_require__(8100)
+const { Web3Storage } = __nccwpck_require__(8100)
 const core = __nccwpck_require__(2186)
 
 async function run () {
