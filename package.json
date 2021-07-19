@@ -16,10 +16,11 @@
     "Filecoin"
   ],
   "scripts": {
+    "test": "ava --verbose",
     "lint": "standard --verbose | snazzy",
     "lint:fix": "standard --fix",
     "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
-    "all": "npm run lint && npm run prepare"
+    "all": "npm run lint && npm run prepare && npm test"
   },
   "dependencies": {
     "@actions/core": "^1.4.0",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@vercel/ncc": "^0.29.0",
+    "ava": "^3.15.0",
     "snazzy": "^9.0.0",
     "standard": "^16.0.3"
   },
