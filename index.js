@@ -3,6 +3,7 @@ const { addToWeb3, pickName } = require('./web3')
 
 async function run () {
   try {
+    console.log(process.env)
     const {
       GITHUB_REPOSITORY,
       GITHUB_SHA

@@ -1,4 +1,4 @@
-name: "units-test"
+name: Test
 on:
   pull_request:
   push:
@@ -7,8 +7,7 @@ on:
       - 'releases/*'
 
 jobs:
-  # unit tests
-  units:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -17,10 +16,8 @@ jobs:
     - run: npm test
       env:
         INPUT_WEB3_TOKEN: ${{ secrets.WEB3_STORAGE_TOKEN }}
-      
 
-  # test action works running from the graph
-  test:
+  run-action:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
