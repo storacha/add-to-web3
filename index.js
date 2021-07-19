@@ -13,7 +13,7 @@ async function run () {
     const pathToAdd = core.getInput('path_to_add')
     core.info(`Adding ${pathToAdd} to ${endpoint.origin}`)
     const name = pickName(GITHUB_REPOSITORY, GITHUB_SHA)
-    const { cid, url } = await addToWeb3({endpoint, token, name, pathToAdd})
+    const { cid, url } = await addToWeb3({ endpoint, token, name, pathToAdd })
     core.info(url)
     core.setOutput('cid', cid)
     core.setOutput('url', url)
