@@ -28718,7 +28718,8 @@ async function run () {
     const web3 = new Web3Storage({ endpoint, token })
 
     core.info(`Adding ${pathToAdd} to ${endpoint.origin}`)
-    const cid = await web3.put(filesFromPath(`${pathToAdd}/**`))
+    const name = `${GITHUB_REPOSITORY.replace('/', '-')}-${GITHUB_SHA.substring(0,8)}`
+    const cid = await web3.put(filesFromPath(`${pathToAdd}/**`), { name })
     const url = `https://dweb.link/ipfs/${cid}`
     core.info(url)
     core.setOutput('cid', cid)
