@@ -1,13 +1,12 @@
 const core = require('@actions/core')
 const { addToWeb3, pickName } = require('./web3')
 
-const {
-  GITHUB_REPOSITORY,
-  GITHUB_SHA
-} = process.env
-
 async function run () {
   try {
+    const {
+      GITHUB_REPOSITORY,
+      GITHUB_SHA
+    } = process.env
     const endpoint = new URL(core.getInput('web3_api'))
     const token = core.getInput('web3_token')
     const pathToAdd = core.getInput('path_to_add')

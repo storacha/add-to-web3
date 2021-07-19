@@ -15,6 +15,9 @@ jobs:
     - run: npm ci
     - run: npm run lint
     - run: npm test
+      env:
+        INPUT_WEB3_TOKEN: ${{ secrets.WEB3_STORAGE_TOKEN }}
+      
 
   # test action works running from the graph
   test:
