@@ -1,21 +1,23 @@
-const core = require('@actions/core');
-const wait = require('./wait');
+const { filesFromPath } = require('files-from-path')
+const Web3Storage = require('web3.storage')
+const core = require('@actions/core')
 
-
-// most @actions toolkit packages have async methods
-async function run() {
+async function run () {
   try {
-    const ms = core.getInput('milliseconds');
-    core.info(`Waiting ${ms} milliseconds ...`);
+    const pathToAdd = core.getInput('path_to_add')
+    const endpoint = new URL(core.getInput('web3_api'))
+    const token = core.getInput('web3_token')
+    const web3 = new Web3Storage({ endpoint, token })
 
-    core.debug((new Date()).toTimeString()); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-    await wait(parseInt(ms));
-    core.info((new Date()).toTimeString());
-
-    core.setOutput('time', new Date().toTimeString());
+    core.info(`Adding ${pathToAdd} to ${endpoint.origin}`)
+    const cid = await web3.put(filesFromPath(`${pathToAdd}/**`))
+    const url = `https://dweb.link/ipfs/${cid}`
+    core.info(url)
+    core.setOutput('cid', cid)
+    core.setOutput('url', cid)
   } catch (error) {
-    core.setFailed(error.message);
+    core.setFailed(error.message)
   }
 }
 
-run();
+run()
