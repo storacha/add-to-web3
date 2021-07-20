@@ -1,7 +1,7 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 5241:
+/***/ 7351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -135,7 +135,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getState = exports.saveState = exports.group = exports.endGroup = exports.startGroup = exports.info = exports.warning = exports.error = exports.debug = exports.isDebug = exports.setFailed = exports.setCommandEcho = exports.setOutput = exports.getBooleanInput = exports.getMultilineInput = exports.getInput = exports.addPath = exports.setSecret = exports.exportVariable = exports.ExitCode = void 0;
-const command_1 = __nccwpck_require__(5241);
+const command_1 = __nccwpck_require__(7351);
 const file_command_1 = __nccwpck_require__(717);
 const utils_1 = __nccwpck_require__(5278);
 const os = __importStar(__nccwpck_require__(2087));
@@ -6874,7 +6874,7 @@ module.exports = {
 "use strict";
 
 
-const drain = __nccwpck_require__(7351)
+const drain = __nccwpck_require__(1798)
 const filter = __nccwpck_require__(2220)
 const take = __nccwpck_require__(2360)
 const all = __nccwpck_require__(5810)
@@ -14334,7 +14334,7 @@ module.exports = batch
 
 /***/ }),
 
-/***/ 7351:
+/***/ 1798:
 /***/ ((module) => {
 
 "use strict";
@@ -26000,6 +26000,30 @@ exports.TextDecoder =
 
 /***/ }),
 
+/***/ 7649:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const { getFilesFromPath } = __nccwpck_require__(5090)
+const { Web3Storage } = __nccwpck_require__(8100)
+
+async function addToWeb3 ({ endpoint, token, pathToAdd, name }) {
+  const web3 = new Web3Storage({ endpoint, token })
+  const files = await getFilesFromPath(`${pathToAdd}`)
+  const cid = await web3.put(files, { name })
+  const url = `https://dweb.link/ipfs/${cid}`
+  return { cid, url }
+}
+
+function pickName (repo, sha) {
+  return `${repo.replace('/', '-')}-${sha.substring(0, 8)}`
+}
+
+module.exports.addToWeb3 = addToWeb3
+module.exports.pickName = pickName
+
+
+/***/ }),
+
 /***/ 5343:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -28706,24 +28730,20 @@ module.exports = require("zlib");
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-const { filesFromPath } = __nccwpck_require__(5090)
-const { Web3Storage } = __nccwpck_require__(8100)
 const core = __nccwpck_require__(2186)
+const { addToWeb3, pickName } = __nccwpck_require__(7649)
 
 async function run () {
   try {
-    const pathToAdd = core.getInput('path_to_add')
+    const name = pickName(process.env.GITHUB_REPOSITORY, process.env.GITHUB_SHA)
     const endpoint = new URL(core.getInput('web3_api'))
+    const pathToAdd = core.getInput('path_to_add')
     const token = core.getInput('web3_token')
-    const web3 = new Web3Storage({ endpoint, token })
-
     core.info(`Adding ${pathToAdd} to ${endpoint.origin}`)
-    const name = `${GITHUB_REPOSITORY.replace('/', '-')}-${GITHUB_SHA.substring(0,8)}`
-    const cid = await web3.put(filesFromPath(`${pathToAdd}/**`), { name })
-    const url = `https://dweb.link/ipfs/${cid}`
+    const { cid, url } = await addToWeb3({ endpoint, token, name, pathToAdd })
     core.info(url)
     core.setOutput('cid', cid)
-    core.setOutput('url', cid)
+    core.setOutput('url', url)
   } catch (error) {
     core.setFailed(error.message)
   }
