@@ -9,8 +9,8 @@ async function addToWeb3 ({ endpoint, token, pathToAdd, name }) {
   return { cid, url }
 }
 
-function pickName (repo, sha) {
-  return `${repo.replace('/', '-')}-${sha.substring(0, 8)}`
+function pickName ({ repo, run, sha }) {
+  return `${repo.replace('/', '-')}-${run}-${sha.substring(0, 8)}`
 }
 
 module.exports.addToWeb3 = addToWeb3
