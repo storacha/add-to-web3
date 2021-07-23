@@ -15,6 +15,10 @@ inputs:
     description: 'API URL'
     required: true
     default: 'https://api.web3.storage'
+  wrap_with_directory:
+    description: 'Boolean. Default: `false`. Should the path_to_add be wrapped in a diretory when creating the IPFS DAG. For most folks using this, the default of `false` is fine. If you want to add a single file and preserve the filename in the IPFS DAG you may want to set it to `true`.'
+    required: true
+    default: 'false'
 outputs:
   cid:
     description: 'The IPFS Content ID for the directory'
