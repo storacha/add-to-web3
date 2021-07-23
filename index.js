@@ -1,21 +1,25 @@
-const core = require('@actions/core');
-const wait = require('./wait');
+const core = require('@actions/core')
+const { addToWeb3, pickName } = require('./web3')
 
-
-// most @actions toolkit packages have async methods
-async function run() {
+async function run () {
   try {
-    const ms = core.getInput('milliseconds');
-    core.info(`Waiting ${ms} milliseconds ...`);
-
-    core.debug((new Date()).toTimeString()); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-    await wait(parseInt(ms));
-    core.info((new Date()).toTimeString());
-
-    core.setOutput('time', new Date().toTimeString());
+    const name = pickName({
+      repo: process.env.GITHUB_REPOSITORY,
+      run: process.env.GITHUB_RUN_NUMBER,
+      sha: process.env.GITHUB_SHA
+    })
+    const endpoint = new URL(core.getInput('web3_api'))
+    const pathToAdd = core.getInput('path_to_add')
+    const token = core.getInput('web3_token')
+    const wrapWithDirectory = core.getBooleanInput('wrap_with_directory')
+    core.info(`Adding ${pathToAdd} to ${endpoint.origin}`)
+    const { cid, url } = await addToWeb3({ endpoint, token, name, pathToAdd, wrapWithDirectory })
+    core.info(url)
+    core.setOutput('cid', cid)
+    core.setOutput('url', url)
   } catch (error) {
-    core.setFailed(error.message);
+    core.setFailed(error.message)
   }
 }
 
-run();
+run()

@@ -1,4 +1,4 @@
-name: "units-test"
+name: Test
 on:
   pull_request:
   push:
@@ -7,19 +7,25 @@ on:
       - 'releases/*'
 
 jobs:
-  # unit tests
-  units:
+  test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm ci
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 16
+    - uses: bahmutov/npm-install@v1
+    - run: npm run lint
     - run: npm test
+      env:
+        INPUT_WEB3_TOKEN: ${{ secrets.WEB3_STORAGE_TOKEN }}
 
-  # test action works running from the graph
-  test:
+  run-action:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: ./
       with:
-        milliseconds: 1000
+        web3_api: 'https://api-staging.web3.storage'
+        web3_token: ${{ secrets.WEB3_STORAGE_TOKEN }}
+        path_to_add: 'test/fixtures'
