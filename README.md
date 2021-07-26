@@ -27,17 +27,25 @@ with:
 
 **Required** API token for web3.storage
 
+
+<details>
+  <summary>Show advanced input options</summary>
+
+
 ### `web3_api`
 
+Useful for testing against dev deployments.
+  
 _Default_ `https://api.web3.storage`
-
-**Required** API URL for web3.storage
-
+  
 ### `wrap_with_directory`
 
+Should the `path_to_add` be wrapped in a diretory when creating the IPFS DAG. For most folks using this, the default of `false` is fine. If you want to add a single file and preserve the filename in the IPFS DAG you may want to set it to `true`.'
+  
 _Default_ `false`
 
-**Required** Should the `path_to_add` be wrapped in a diretory when creating the IPFS DAG. For most folks using this, the default of `false` is fine. If you want to add a single file and preserve the filename in the IPFS DAG you may want to set it to `true`.'
+
+</details>
 
 ## Outputs
 
