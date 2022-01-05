@@ -4,7 +4,7 @@
 ## Example usage
 
 ```yaml
-uses: web3-storage/add-to-web3@v1
+uses: web3-storage/add-to-web3@v2
 id: web3
 with:
   web3_token: ${{ secrets.WEB3_STORAGE_TOKEN }}
