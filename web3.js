@@ -1,9 +1,9 @@
 const { getFilesFromPath } = require('files-from-path')
 const { Web3Storage } = require('web3.storage')
 
-async function addToWeb3 ({ endpoint, token, pathToAdd, name, wrapWithDirectory = false }) {
+async function addToWeb3 ({ endpoint, token, pathToAdd, name, wrapWithDirectory = false, includeHidden }) {
   const web3 = new Web3Storage({ endpoint, token })
-  const files = await getFilesFromPath(pathToAdd)
+  const files = await getFilesFromPath(pathToAdd, { hidden: includeHidden })
   const cid = await web3.put(files, { name, wrapWithDirectory })
   const url = `https://dweb.link/ipfs/${cid}`
   return { cid, url }

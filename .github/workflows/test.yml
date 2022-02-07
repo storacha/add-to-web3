@@ -29,3 +29,5 @@ jobs:
         web3_api: 'https://api-staging.web3.storage'
         web3_token: ${{ secrets.WEB3_STORAGE_TOKEN }}
         path_to_add: 'test/fixtures'
+        # test non default option
+        include_hidden: true
