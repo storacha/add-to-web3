@@ -2,7 +2,7 @@ name: 'Add to web3'
 description: 'Publish your files and websites to web3.storage'
 author: olizilla
 branding:
-  icon: 'box'  
+  icon: 'box'
   color: 'white'
 inputs:
   path_to_add:
