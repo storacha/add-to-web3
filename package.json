@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.6.0",
-    "files-from-path": "^0.2.2",
+    "files-from-path": "^0.2.6",
     "web3.storage": "^3.5.2"
   },
   "devDependencies": {
