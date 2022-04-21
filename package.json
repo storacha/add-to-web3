@@ -31,7 +31,7 @@
     "@vercel/ncc": "^0.29.0",
     "ava": "^3.15.0",
     "snazzy": "^9.0.0",
-    "standard": "^16.0.4"
+    "standard": "^17.0.0"
   },
   "standard": {
     "ignore": [
