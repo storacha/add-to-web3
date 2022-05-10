@@ -27,23 +27,32 @@ with:
 
 **Required** API token for web3.storage
 
-
 <details>
-  <summary>Show advanced input options</summary>
-
-
-### `web3_api`
-
-Useful for testing against dev deployments.
+  <summary>
   
-_Default_ `https://api.web3.storage`
+  Show advanced options: `wrap_with_directory`, `include_hidden`, `web3_api`
   
+  </summary>
+
 ### `wrap_with_directory`
 
 Should the `path_to_add` be wrapped in a diretory when creating the IPFS DAG. For most folks using this, the default of `false` is fine. If you want to add a single file and preserve the filename in the IPFS DAG you may want to set it to `true`.'
   
 _Default_ `false`
 
+### `include_hidden`
+
+Should hidden files prefixed with a `.` be included when found in the `path_to_add`
+
+see: https://github.com/web3-storage/files-from-path#filesfrompath
+
+_Default_ `false`
+
+### `web3_api`
+
+Useful for testing against dev deployments.
+  
+_Default_ `https://api.web3.storage`
 
 </details>
 
