@@ -27,23 +27,34 @@ with:
 
 **Required** API token for web3.storage
 
-
 <details>
-  <summary>Show advanced input options</summary>
+  <summary>Show advanced options: <code>wrap_with_directory</code>, <code>include_hidden</code>, <code>web3_api</code></summary>
 
+### `wrap_with_directory`
+
+_Default_ `false`
+
+Should the `path_to_add` be wrapped in a diretory when creating the IPFS DAG. For most folks using this action the default of `false` is fine. 
+
+This is the opposite of the default that web3.storage uses, as this action is commonly used to add a directory that contains a static website to IPFS. In that case you want the path_to_add to become the root cid so you can host your site at `https://<cid>.ipfs.dweb.link` rather than `https://<cid>.ipfs.dweb.link/<path_to_add>`.
+
+If you do want to capture the `path_to_add` path itself in the IPFS DAG then you want to set `wrap_with_directory:true`.
+
+see: https://web3.storage/docs/reference/js-client-library#parameters
+
+### `include_hidden`
+
+_Default_ `false`
+
+Should hidden files prefixed with a `.` be included when found in the `path_to_add`
+
+see: https://github.com/web3-storage/files-from-path#filesfrompath
 
 ### `web3_api`
 
-Useful for testing against dev deployments.
-  
 _Default_ `https://api.web3.storage`
-  
-### `wrap_with_directory`
 
-Should the `path_to_add` be wrapped in a diretory when creating the IPFS DAG. For most folks using this, the default of `false` is fine. If you want to add a single file and preserve the filename in the IPFS DAG you may want to set it to `true`.'
-  
-_Default_ `false`
-
+Useful for testing against staging deployments by setting to the api origin of your choice.
 
 </details>
 
