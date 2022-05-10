@@ -28,11 +28,7 @@ with:
 **Required** API token for web3.storage
 
 <details>
-  <summary>
-  
-  Show advanced options: `wrap_with_directory`, `include_hidden`, `web3_api`
-  
-  </summary>
+  <summary>Show advanced options: <code>wrap_with_directory</code>, <code>include_hidden</code>, <code>web3_api</code></summary>
 
 ### `wrap_with_directory`
 
