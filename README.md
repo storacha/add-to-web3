@@ -4,11 +4,12 @@
 ## Example usage
 
 ```yaml
-uses: web3-storage/add-to-web3@v2
+uses: 10xHuman/add-to-web3@v2
 id: web3
 with:
   web3_token: ${{ secrets.WEB3_STORAGE_TOKEN }}
   path_to_add: 'dist'
+  file_name:  'test'
 
 # "bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am"
 - run: echo ${{ steps.web3.outputs.cid }}
@@ -22,6 +23,10 @@ with:
 ### `path_to_add`
 
 **Required** The path the root directory of your static website or other content that you want to publish to IPFS.
+
+### `file_name`
+
+**Required** file name that you want to publish to IPFS.
 
 ### `web3_token`
 

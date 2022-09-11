@@ -5,6 +5,9 @@ branding:
   icon: 'box'
   color: 'white'
 inputs:
+  file_name:
+    description: 'Filename path to add to IPFS'
+    required: true
   path_to_add:
     description: 'Directory path to add to IPFS'
     required: true
