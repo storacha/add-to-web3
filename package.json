@@ -25,7 +25,7 @@
   "dependencies": {
     "@actions/core": "^1.6.0",
     "files-from-path": "^0.2.2",
-    "web3.storage": "^4.2.0"
+    "web3.storage": "^4.5.4"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.29.0",
