@@ -26,6 +26,8 @@ inputs:
 outputs:
   cid:
     description: 'The IPFS Content ID for the directory'
+  url:
+    description: 'The IPFS Gateway URL'
 runs:
   using: 'node16'
   main: 'dist/index.js'
