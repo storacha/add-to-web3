@@ -1,7 +1,7 @@
 <h1 align="center">⁂<br/>web3.storage</h1>
 <p align="center">Add a directory to web3.storage from an Action, and output it's IPFS Content ID.</p>
 
-> ⚠️ This repo will be archived on January 9, 2024 as this repo uses the old web3.storage API which will no longer take new uploads. Please use the [new client and API](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client) for future usage of web3.storage. Documentation for the new client can be found [here](https://web3.storage/docs). You can learn more about these changes [here](https://blog.web3.storage/posts/the-data-layer-is-here-with-the-new-web3-storage).
+! v3 of this action will work with the new w3up api once https://github.com/web3-storage/add-to-web3/issues/87 lands.
 
 ## Example usage
 
