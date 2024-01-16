@@ -1,22 +1,24 @@
-<h1 align="center">⁂<br/>web3.storage</h1>
-<p align="center">Add a directory to web3.storage from an Action, and output it's IPFS Content ID.</p>
+# add-to-web3
 
-> ⚠️ This repo will be archived on January 9, 2024 as this repo uses the old web3.storage API which will no longer take new uploads. Please use the [new client and API](https://github.com/web3-storage/w3up/tree/main/packages/w3up-client) for future usage of web3.storage. Documentation for the new client can be found [here](https://web3.storage/docs). You can learn more about these changes [here](https://blog.web3.storage/posts/the-data-layer-is-here-with-the-new-web3-storage).
+Upload files to web3.storage from a Github Action, and output it's IPFS Content ID.
+
+_A composite github action. It's [just yaml](./action.yml) calling [w3cli](https://github.com/web3-storage/w3cli_
 
 ## Example usage
 
 ```yaml
-uses: web3-storage/add-to-web3@v2
-id: web3
+uses: web3-storage/add-to-web3@v3
+id: w3
 with:
-  web3_token: ${{ secrets.WEB3_STORAGE_TOKEN }}
   path_to_add: 'dist'
+  proof: ${{ secrets.W3_PROOF }}
+  secret_key: ${{ secrets.W3_PRINCIPAL }}
 
 # "bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am"
-- run: echo ${{ steps.web3.outputs.cid }}
+- run: echo ${{ steps.w3.outputs.cid }}
 
-# "https://dweb.link/ipfs/bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am"
-- run: echo ${{ steps.web3.outputs.url }}
+# "https://bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am.ipfs.w3s.link"
+- run: echo ${{ steps.w3.outputs.url }}
 ```
 
 ## Inputs
@@ -25,24 +27,20 @@ with:
 
 **Required** The path the root directory of your static website or other content that you want to publish to IPFS.
 
-### `web3_token`
+### `secret_key`
 
-**Required** API token for web3.storage
+**Required** The base64 key to use to sign ucan invocations to web3.storage. 
+
+Create one using `w3 key create`. See: https://github.com/web3-storage/w3cli#w3_principal
+
+### `proof`
+
+**Required** A base64 encoded UCAN delegating capabilities the signing key above. 
+
+Create using `w3 delegation create --base64`
 
 <details>
-  <summary>Show advanced options: <code>wrap_with_directory</code>, <code>include_hidden</code>, <code>web3_api</code></summary>
-
-### `wrap_with_directory`
-
-_Default_ `false`
-
-Should the `path_to_add` be wrapped in a diretory when creating the IPFS DAG. For most folks using this action the default of `false` is fine. 
-
-This is the opposite of the default that web3.storage uses, as this action is commonly used to add a directory that contains a static website to IPFS. In that case you want the path_to_add to become the root cid so you can host your site at `https://<cid>.ipfs.dweb.link` rather than `https://<cid>.ipfs.dweb.link/<path_to_add>`.
-
-If you do want to capture the `path_to_add` path itself in the IPFS DAG then you want to set `wrap_with_directory:true`.
-
-see: https://web3.storage/docs/reference/js-client-library#parameters
+  <summary>Show advanced options: <code>include_hidden</code>, <code>no_wrap</code></summary>
 
 ### `include_hidden`
 
@@ -52,11 +50,12 @@ Should hidden files prefixed with a `.` be included when found in the `path_to_a
 
 see: https://github.com/web3-storage/files-from-path#filesfrompath
 
-### `web3_api`
 
-_Default_ `https://api.web3.storage`
+### `no_wrap`
 
-Useful for testing against staging deployments by setting to the api origin of your choice.
+_Default_ `false`
+
+Advanced: if `path_to_add` points to a file it will be wrapped in a directory to preserve the filename. To disable that set no_wrap: "true".
 
 </details>
 
@@ -72,11 +71,8 @@ e.g. `bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am`
 The IPFS gateway URL for the directory 
 e.g. `https://dweb.link/ipfs/bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am`
 
-
 ## Contibuting
 
 💌 Considerate contributions welcome! 
-
-The `dist` folder is commited to the repo as is the curious cultural norm with JS actions, as the repo is the delivery mechanism, so to spare some cycles for the user users, all the deps are bundled into a single /dist/index.js monolith.
 
 <h3 align="center"><a href="https://web3.storage">⁂</a></h3>

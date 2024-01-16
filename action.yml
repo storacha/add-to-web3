@@ -4,30 +4,65 @@ author: olizilla
 branding:
   icon: 'box'
   color: 'white'
+
 inputs:
   path_to_add:
     description: 'Directory path to add to IPFS'
     required: true
-  include_hidden:
-    description: 'Include hidden files'
-    required: false
-    default: 'false'
-  web3_token:
-    description: 'API token for web3.storage'
+
+  secret_key:
+    description: 'The base64 key to use to sign ucan invocations. Create one using `w3 key create`. See: https://github.com/web3-storage/w3cli#w3_principal'
     required: true
-  web3_api:
-    description: 'API URL'
-    required: false
-    default: 'https://api.web3.storage'
-  wrap_with_directory:
-    description: 'Boolean. Default: `false`. Should the path_to_add be wrapped in a diretory when creating the IPFS DAG. For most folks using this, the default of `false` is fine. If you want to add a single file and preserve the filename in the IPFS DAG you may want to set it to `true`.'
+
+  proof:
+    description: 'A base64 encoded UCAN delegating capabilities the signing key above. Create using `w3 delegation create --base64`'
+    required: true
+
+  include_hidden:
+    description: 'Include paths that start with "."'
     required: false
     default: 'false'
+
+  no_wrap:
+    description: 'Advanced: if `path_to_add` points to a file it will be wrapped in a directory to preserve the filename. To disable that set no_wrap: "true"'
+    required: false
+    default: 'false'
+
 outputs:
   cid:
-    description: 'The IPFS Content ID for the directory'
+    description: 'The IPFS Content ID for path_to_add'
+    value: ${{ steps.get_cid.outputs.cid }}
+
   url:
     description: 'The IPFS Gateway URL'
+    value: ${{ steps.get_url.outputs.url }}
+
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: "composite"
+  steps:
+    # Use the branch while testing.
+    - run: npm install -g github:web3-storage/w3cli#stringify
+      shell: bash
+
+    - run: w3 space add ${{ inputs.proof }}
+      env:
+        W3_PRINCIPAL: ${{ inputs.secret_key }}
+      shell: bash
+
+    - run: w3 up ${{ inputs.path_to_add }} --json | tee ./w3_up_output.json
+      env:
+        W3_PRINCIPAL: ${{ inputs.secret_key }}
+      shell: bash
+    
+    # expect `./w3_up_output.json` to contain "{ "root": { "/":  "bafy..." }}
+    - name: fail if no CID in response
+      run: jq --exit-status --raw-output '.root."/"' ./w3_up_output.json
+      shell: bash
+
+    - id: get_cid
+      run: echo "::set-output name=cid::$(jq --exit-status --raw-output '.root."/"' ./w3_up_output.json)"
+      shell: bash
+
+    - id: get_url
+      run: echo "::set-output name=url::https://${{ steps.get_cid.outputs.cid }}.ipfs.w3s.link"
+      shell: bash
