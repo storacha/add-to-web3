@@ -2,7 +2,7 @@
 
 Upload files to web3.storage from a Github Action, and output it's IPFS Content ID.
 
-_A composite github action. It's [just yaml](./action.yml) calling [w3cli](https://github.com/web3-storage/w3cli_
+_A composite github action. It's [just yaml](./action.yml) calling [w3cli](https://github.com/web3-storage/w3cli)_
 
 ## Example usage
 
@@ -29,7 +29,7 @@ with:
 
 ### `secret_key`
 
-**Required** The base64 key to use to sign ucan invocations to web3.storage. 
+**Required** The base64 encoded key to use to sign UCAN invocations to web3.storage. 
 
 Create one using `w3 key create`. See: https://github.com/web3-storage/w3cli#w3_principal
 

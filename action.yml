@@ -11,11 +11,11 @@ inputs:
     required: true
 
   secret_key:
-    description: 'The base64 key to use to sign ucan invocations. Create one using `w3 key create`. See: https://github.com/web3-storage/w3cli#w3_principal'
+    description: 'The base64 encoded key to use to sign UCAN invocations. Create one using `w3 key create`. See: https://github.com/web3-storage/w3cli#w3_principal'
     required: true
 
   proof:
-    description: 'A base64 encoded UCAN delegating capabilities the signing key above. Create using `w3 delegation create --base64`'
+    description: 'A base64 encoded UCAN delegating capabilities the secret signing key above. Create using `w3 delegation create --base64`'
     required: true
 
   include_hidden:
