@@ -60,9 +60,9 @@ runs:
       shell: bash
 
     - id: get_cid
-      run: echo "::set-output name=cid::$(jq --exit-status --raw-output '.root."/"' ./w3_up_output.json)"
+      run: echo "cid=$(jq --exit-status --raw-output '.root."/"' ./w3_up_output.json)" >> "$GITHUB_OUTPUT"
       shell: bash
 
     - id: get_url
-      run: echo "::set-output name=url::https://${{ steps.get_cid.outputs.cid }}.ipfs.w3s.link"
+      run: echo "url=https://${{ steps.get_cid.outputs.cid }}.ipfs.w3s.link" >> "$GITHUB_OUTPUT"
       shell: bash
