@@ -16,23 +16,23 @@ jobs:
       uses: ./
       id: run1
       with:
+        path_to_add: 'test/fixtures'
         proof: ${{ secrets.W3_PROOF }}
         secret_key: ${{ secrets.W3_PRINCIPAL }}
-        path_to_add: 'test/fixtures'
 
     - name: test run 1 output
-      run: echo "unexpected output cid" && exit 1
-      if: ${{ steps.run1.outputs.cid != 'bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy' }} 
+      run: echo "unexpected output cid ${{ steps.run1.outputs.cid }}" && exit 1
+      if: ${{ steps.run1.outputs.cid != 'bafybeifpw7nrh374rzfcxpaw3bkp6fr7djmujg5wvib6ma7i7n76t3k53q' }} 
 
-    - name: run 2 - upload with no_wrap true
+    - name: run 2 - upload (wrap=false)
       uses: ./
       id: run2
       with:
+        wrap: false
+        path_to_add: 'test/fixtures'
         proof: ${{ secrets.W3_PROOF }}
         secret_key: ${{ secrets.W3_PRINCIPAL }}
-        path_to_add: 'test/fixtures'
-        wrap: true
-    
+
     - name: test run 2 output
-      run: echo "unexpected output cid" && exit 1
-      if: ${{ steps.run2.outputs.cid != 'bafybeifpw7nrh374rzfcxpaw3bkp6fr7djmujg5wvib6ma7i7n76t3k53q' }} 
+      run: echo "unexpected output cid ${{ steps.run2.outputs.cid }}" && exit 1
+      if: ${{ steps.run2.outputs.cid != 'bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy' }} 
