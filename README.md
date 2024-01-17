@@ -112,7 +112,7 @@ e.g. `bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am`
 The IPFS gateway URL for the directory 
 e.g. `https://dweb.link/ipfs/bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am`
 
-## Contibuting
+## Contributing
 
 💌 Considerate contributions welcome! 
 
