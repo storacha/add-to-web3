@@ -48,7 +48,7 @@ runs:
         W3_PRINCIPAL: ${{ inputs.secret_key }}
       shell: bash
 
-    - run: w3 up ${{ inputs.path_to_add }} --json --hidden={{ $inputs.hidden }} --wrap={{ $inputs.wrap }} | tee ./w3_up_output.json
+    - run: w3 up ${{ inputs.path_to_add }} --json --hidden=${{ inputs.hidden }} --wrap=${{ inputs.wrap }} | tee ./w3_up_output.json
       env:
         W3_PRINCIPAL: ${{ inputs.secret_key }}
       shell: bash
