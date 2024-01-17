@@ -47,5 +47,5 @@ jobs:
         secret_key: ${{ secrets.W3_PRINCIPAL }}
 
     - name: test run 3 output
-      run: echo "unexpected output cid ${{ steps.run2.outputs.cid }}" && exit 1
-      if: ${{ steps.run2.outputs.cid != 'bafybeiht4hxkewkiqwa3rbw6bnlom2s7wajkbspsgjgn6wojioii4rh77y' }} 
+      run: echo "unexpected output cid ${{ steps.run3.outputs.cid }}" && exit 1
+      if: ${{ steps.run3.outputs.cid != 'bafybeiht4hxkewkiqwa3rbw6bnlom2s7wajkbspsgjgn6wojioii4rh77y' }} 
