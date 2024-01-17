@@ -49,6 +49,13 @@ runs:
       shell: bash
 
     - run: w3 up ${{ inputs.path_to_add }} --json | tee ./w3_up_output.json
+      if: ${{ inputs.no_wrap !== 'true' }}
+      env:
+        W3_PRINCIPAL: ${{ inputs.secret_key }}
+      shell: bash
+
+    - run: w3 up ${{ inputs.path_to_add }} --json --no-wrap | tee ./w3_up_output.json
+      if: ${{ inputs.no_wrap === 'true' }}
       env:
         W3_PRINCIPAL: ${{ inputs.secret_key }}
       shell: bash
