@@ -1,23 +1,52 @@
-<h1 align="center">⁂<br/>web3.storage</h1>
-<p align="center">Add a directory to web3.storage from an Action, and output it's IPFS Content ID.</p>
+# add-to-web3
 
-! v3 of this action will work with the new w3up api once https://github.com/web3-storage/add-to-web3/issues/87 lands.
+Upload files to [web3.storage](https://web3.storage) from a Github Action, and output the IPFS Content ID.
 
-## Example usage
+A lightweight wrapper around [w3cli](https://github.com/web3-storage/w3cli). As a [composite](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action) github action all it does is configure and call the cli for you. See the steps in [./action.yml](./action.yml).
+
+## Usage
 
 ```yaml
-uses: web3-storage/add-to-web3@v2
-id: web3
+uses: web3-storage/add-to-web3@v3
+id: w3up
 with:
-  web3_token: ${{ secrets.WEB3_STORAGE_TOKEN }}
   path_to_add: 'dist'
+  proof: ${{ secrets.W3_PROOF }}
+  secret_key: ${{ secrets.W3_PRINCIPAL }}
 
+# use the outputs in subsequent steps
 # "bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am"
-- run: echo ${{ steps.web3.outputs.cid }}
+- run: echo ${{ steps.w3up.outputs.cid }}
 
-# "https://dweb.link/ipfs/bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am"
-- run: echo ${{ steps.web3.outputs.url }}
+# "https://bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am.ipfs.w3s.link"
+- run: echo ${{ steps.w3up.outputs.url }}
 ```
+
+Use [w3cli] to generate a `secret_key` and `proof` to allow this action to upload to a space on.
+
+Install it from npm and login as described here https://web3.storage/docs/quickstart/ then:
+
+```shell
+# create a signing key for CI.
+# Use the `did` in the input to the next command. 
+# Use `key` as your `secret_key` for add_to_web3.
+$ w3 key create --json
+{
+  "did": "did:key:z6Mk...",
+  "key": "MgCaT7Se2QX9..."
+}
+
+# create a base64 encoded UCAN `proof` 
+# It delegates store and upload permissions to the `did` we created above.
+$ w3 delegation create did:key:z6Mk... -c 'store/add' -c 'upload/add' --base64
+mAYIEAP8OEaJlcm9vdHOAZ3ZlcnNpb24BwwUBcRIg+oHTbzShh1WzBo9ISkonCW+KAcy/+zW8Zb...
+```
+
+- Use the `key` value from the output of `w3 key create --json` as the `secret_key` for this action.
+- Use the `did value from that command as the audience for `w3 delegation create <audience>` shown above.
+- Use the output of `w3 delegation create <audience>` as the `proof` for this action.
+
+Keep the `secret_key` safe. Save it as a secret on your repo. The `proof` delegates permission from your account to that key to upload to your space. The `proof` can only be used by an agent that holds the `secret_key`.
 
 ## Inputs
 
@@ -25,38 +54,41 @@ with:
 
 **Required** The path the root directory of your static website or other content that you want to publish to IPFS.
 
-### `web3_token`
+### `secret_key`
 
-**Required** API token for web3.storage
+**Required** The base64 encoded key to use to sign UCAN invocations to web3.storage. 
+
+Create one using `w3 key create`. See: https://github.com/web3-storage/w3cli#w3_principal
+
+### `proof`
+
+**Required** A base64 encoded UCAN delegating capabilities the signing key above. 
+
+Create a proof using w3cli, delegating `store/add' and `upload/add`
+
+```shell
+$ AUDIENCE_DID="<the DID for secret_key created by `w3 key create`>"
+$ w3 delegation create $AUDIENCE_DID  -c 'store/add' -c 'upload/add' --base64`
+```
 
 <details>
-  <summary>Show advanced options: <code>wrap_with_directory</code>, <code>include_hidden</code>, <code>web3_api</code></summary>
+  <summary>Show advanced options: <code>hidden</code>, <code>wrap</code></summary>
 
-### `wrap_with_directory`
-
-_Default_ `false`
-
-Should the `path_to_add` be wrapped in a diretory when creating the IPFS DAG. For most folks using this action the default of `false` is fine. 
-
-This is the opposite of the default that web3.storage uses, as this action is commonly used to add a directory that contains a static website to IPFS. In that case you want the path_to_add to become the root cid so you can host your site at `https://<cid>.ipfs.dweb.link` rather than `https://<cid>.ipfs.dweb.link/<path_to_add>`.
-
-If you do want to capture the `path_to_add` path itself in the IPFS DAG then you want to set `wrap_with_directory:true`.
-
-see: https://web3.storage/docs/reference/js-client-library#parameters
-
-### `include_hidden`
+### `hidden`
 
 _Default_ `false`
 
 Should hidden files prefixed with a `.` be included when found in the `path_to_add`
 
-see: https://github.com/web3-storage/files-from-path#filesfrompath
+see: See: https://github.com/web3-storage/w3cli#w3-up-path-path
 
-### `web3_api`
+### `wrap`
 
-_Default_ `https://api.web3.storage`
+_Default_ `true`
 
-Useful for testing against staging deployments by setting to the api origin of your choice.
+If `path_to_add` points to a file it will be wrapped in a directory to preserve the filename. To disable that set wrap: "true".
+
+See: https://github.com/web3-storage/w3cli#w3-up-path-path
 
 </details>
 
@@ -72,11 +104,8 @@ e.g. `bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am`
 The IPFS gateway URL for the directory 
 e.g. `https://dweb.link/ipfs/bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am`
 
-
 ## Contibuting
 
 💌 Considerate contributions welcome! 
-
-The `dist` folder is commited to the repo as is the curious cultural norm with JS actions, as the repo is the delivery mechanism, so to spare some cycles for the user users, all the deps are bundled into a single /dist/index.js monolith.
 
 <h3 align="center"><a href="https://web3.storage">⁂</a></h3>
