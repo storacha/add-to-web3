@@ -36,3 +36,16 @@ jobs:
     - name: test run 2 output
       run: echo "unexpected output cid ${{ steps.run2.outputs.cid }}" && exit 1
       if: ${{ steps.run2.outputs.cid != 'bafkreigh2akiscaildcqabsyg3dfr6chu3fgpregiymsck7e7aqa4s52zy' }} 
+
+    - name: run 3 - upload (hidden=true)
+      uses: ./
+      id: run3
+      with:
+        hidden: true
+        path_to_add: 'test/fixtures'
+        proof: ${{ secrets.W3_PROOF }}
+        secret_key: ${{ secrets.W3_PRINCIPAL }}
+
+    - name: test run 3 output
+      run: echo "unexpected output cid ${{ steps.run2.outputs.cid }}" && exit 1
+      if: ${{ steps.run2.outputs.cid != 'bafybeiht4hxkewkiqwa3rbw6bnlom2s7wajkbspsgjgn6wojioii4rh77y' }} 
