@@ -72,9 +72,9 @@ $ w3 delegation create $AUDIENCE_DID  -c 'store/add' -c 'upload/add' --base64`
 ```
 
 <details>
-  <summary>Show advanced options: <code>include_hidden</code>, <code>no_wrap</code></summary>
+  <summary>Show advanced options: <code>hidden</code>, <code>wrap</code></summary>
 
-### `include_hidden`
+### `hidden`
 
 _Default_ `false`
 
@@ -82,11 +82,11 @@ Should hidden files prefixed with a `.` be included when found in the `path_to_a
 
 see: See: https://github.com/web3-storage/w3cli#w3-up-path-path
 
-### `no_wrap`
+### `wrap`
 
-_Default_ `false`
+_Default_ `true`
 
-Advanced: if `path_to_add` points to a file it will be wrapped in a directory to preserve the filename. To disable that set no_wrap: "true".
+If `path_to_add` points to a file it will be wrapped in a directory to preserve the filename. To disable that set wrap: "true".
 
 See: https://github.com/web3-storage/w3cli#w3-up-path-path
 

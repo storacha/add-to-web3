@@ -31,7 +31,7 @@ jobs:
         proof: ${{ secrets.W3_PROOF }}
         secret_key: ${{ secrets.W3_PRINCIPAL }}
         path_to_add: 'test/fixtures'
-        no_wrap: true
+        wrap: true
     
     - name: test run 2 output
       run: echo "unexpected output cid" && exit 1

@@ -18,15 +18,15 @@ inputs:
     description: 'A base64 encoded UCAN delegating capabilities the secret signing key above. Create using `w3 delegation create --base64`'
     required: true
 
-  include_hidden:
+  hidden:
     description: 'Include paths that start with "."'
     required: false
     default: 'false'
 
-  no_wrap:
-    description: 'Advanced: if `path_to_add` points to a file it will be wrapped in a directory to preserve the filename. To disable that set no_wrap: "true"'
+  wrap:
+    description: 'If `path_to_add` points to a file it will be wrapped in a directory to preserve the filename. To disable that set wrap: "false"'
     required: false
-    default: 'false'
+    default: 'true'
 
 outputs:
   cid:
@@ -40,7 +40,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: npm install -g @web3-storage/w3cli
+    - run: npm install -g github:web3-storage/w3cli#no-no-wrap
       shell: bash
 
     - run: w3 space add ${{ inputs.proof }}
@@ -48,14 +48,7 @@ runs:
         W3_PRINCIPAL: ${{ inputs.secret_key }}
       shell: bash
 
-    - run: w3 up ${{ inputs.path_to_add }} --json | tee ./w3_up_output.json
-      if: ${{ inputs.no_wrap !== 'true' }}
-      env:
-        W3_PRINCIPAL: ${{ inputs.secret_key }}
-      shell: bash
-
-    - run: w3 up ${{ inputs.path_to_add }} --json --no-wrap | tee ./w3_up_output.json
-      if: ${{ inputs.no_wrap === 'true' }}
+    - run: w3 up ${{ inputs.path_to_add }} --json --hidden={{ $inputs.hidden }} --wrap={{ $inputs.wrap }} | tee ./w3_up_output.json
       env:
         W3_PRINCIPAL: ${{ inputs.secret_key }}
       shell: bash
