@@ -17,4 +17,4 @@ jobs:
         secret_key: ${{ secrets.W3_PRINCIPAL }}
         path_to_add: 'test/fixtures'
         # test non default option
-        include_hidden: true
+        no_wrap: true
