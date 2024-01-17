@@ -40,7 +40,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: npm install -g github:web3-storage/w3cli#no-no-wrap
+    - run: npm install -g @web3-storage/w3cli
       shell: bash
 
     - run: w3 space add ${{ inputs.proof }}
