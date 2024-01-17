@@ -1,25 +1,52 @@
 # add-to-web3
 
-Upload files to web3.storage from a Github Action, and output it's IPFS Content ID.
+Upload files to [web3.storage](https://web3.storage) from a Github Action, and output the IPFS Content ID.
 
-_A composite github action. It's [just yaml](./action.yml) calling [w3cli](https://github.com/web3-storage/w3cli)_
+A lightweight wrapper around [w3cli](https://github.com/web3-storage/w3cli). As a [composite](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action) github action all it does is configure and call the cli for you. See the steps in [./action.yml](./action.yml).
 
-## Example usage
+## Usage
 
 ```yaml
 uses: web3-storage/add-to-web3@v3
-id: w3
+id: w3up
 with:
   path_to_add: 'dist'
   proof: ${{ secrets.W3_PROOF }}
   secret_key: ${{ secrets.W3_PRINCIPAL }}
 
+# use the outputs in subsequent steps
 # "bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am"
-- run: echo ${{ steps.w3.outputs.cid }}
+- run: echo ${{ steps.w3up.outputs.cid }}
 
 # "https://bafkreicysg23kiwv34eg2d7qweipxwosdo2py4ldv42nbauguluen5v6am.ipfs.w3s.link"
-- run: echo ${{ steps.w3.outputs.url }}
+- run: echo ${{ steps.w3up.outputs.url }}
 ```
+
+Use [w3cli] to generate a `secret_key` and `proof` to allow this action to upload to a space on.
+
+Install it from npm and login as described here https://web3.storage/docs/quickstart/ then:
+
+```shell
+# create a signing key for CI.
+# Use the `did` in the input to the next command. 
+# Use `key` as your `secret_key` for add_to_web3.
+$ w3 key create --json
+{
+  "did": "did:key:z6Mk...",
+  "key": "MgCaT7Se2QX9..."
+}
+
+# create a base64 encoded UCAN `proof` 
+# It delegates store and upload permissions to the `did` we created above.
+$ w3 delegation create did:key:z6Mk... -c 'store/add' -c 'upload/add' --base64
+mAYIEAP8OEaJlcm9vdHOAZ3ZlcnNpb24BwwUBcRIg+oHTbzShh1WzBo9ISkonCW+KAcy/+zW8Zb...
+```
+
+- Use the `key` value from the output of `w3 key create --json` as the `secret_key` for this action.
+- Use the `did value from that command as the audience for `w3 delegation create <audience>` shown above.
+- Use the output of `w3 delegation create <audience>` as the `proof` for this action.
+
+Keep the `secret_key` safe. Save it as a secret on your repo. The `proof` delegates permission from your account to that key to upload to your space. The `proof` can only be used by an agent that holds the `secret_key`.
 
 ## Inputs
 
