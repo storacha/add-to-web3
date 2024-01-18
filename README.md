@@ -24,7 +24,7 @@ with:
 
 ### Generating a `secret_key` and `proof`
 
-On your dev machine, use [w3cli] to generate a `secret_key` and `proof` to allow this action to upload to a space on.
+On your dev machine, use [w3cli] to generate a `secret_key` and `proof` to allow this action to upload to a space.
 
 Install it from npm and login as described here https://web3.storage/docs/quickstart/ then create a key like this:
 
@@ -53,7 +53,7 @@ The capabilies `store/add` and `upload/add` are the minimum required to upload f
 To recap:
 
 - Use the `key` value from the output of `w3 key create --json` as the `secret_key` for this action.
-- Use the `did value from that output as the audience for `w3 delegation create <audience>` shown above.
+- Use the `did` value from that output as the audience for `w3 delegation create <audience>` shown above.
 - Use the output of `w3 delegation create <audience> --base64` as the `proof` for this action.
 
 ## Inputs
