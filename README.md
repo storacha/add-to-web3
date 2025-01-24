@@ -40,15 +40,15 @@ $ w3 key create --json
 
 Keep the `key` safe. Save it as a secret on your repo.
 
-Copy the `did` for use in the next command. The output is a base64 encoded ucan `proof` that delegates capabilities to `store/add` and `upload/add` on your current space to the key generated above.
+Copy the `did` for use in the next command. The output is a base64 encoded ucan `proof` that delegates capabilities to `space/blob/add`, `space/index/add`, `filecoin/offer`, and `upload/add` on your current space to the key generated above.
 
 ```shell
 # Delegate capabilities to the `did` we created above.
-$ w3 delegation create did:key:z6Mk... -c 'store/add' -c 'upload/add' --base64
+$ w3 delegation create did:key:z6Mk... -c space/blob/add -c space/index/add -c filecoin/offer -c upload/add --base64
 mAYIEAP8OEaJlcm9vdHOAZ3ZlcnNpb24BwwUBcRIg+oHTbzShh1WzBo9ISkonCW+KAcy/+zW8Zb...
 ```
 
-The capabilies `store/add` and `upload/add` are the minimum required to upload files to web3.storage. This proof will not allow that key to list uploads in this space for example.
+The capabilies `space/blob/add`, `space/index/add`, `filecoin/offer`, and `upload/add` are the minimum required to upload files to web3.storage. This proof will not allow that key to list uploads in this space for example.
 
 To recap:
 
@@ -72,11 +72,11 @@ Create one using `w3 key create`. See: https://github.com/web3-storage/w3cli#w3_
 
 **Required** A base64 encoded UCAN delegating capabilities the signing key above. 
 
-Create a proof using w3cli, delegating `store/add' and `upload/add`
+Create a proof using w3cli, delegating `space/blob/add`, `space/index/add`, `filecoin/offer`, and `upload/add`
 
 ```shell
 $ AUDIENCE_DID="<the DID for secret_key created by `w3 key create`>"
-$ w3 delegation create $AUDIENCE_DID  -c 'store/add' -c 'upload/add' --base64`
+$ w3 delegation create $AUDIENCE_DID  -c space/blob/add -c space/index/add -c filecoin/offer -c upload/add --base64`
 ```
 
 <details>
