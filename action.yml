@@ -1,5 +1,5 @@
 name: 'Add to web3'
-description: 'Publish your files and websites to web3.storage'
+description: 'Publish your files and websites to Storacha'
 author: olizilla
 branding:
   icon: 'box'
@@ -11,11 +11,11 @@ inputs:
     required: true
 
   secret_key:
-    description: 'The base64 encoded key to use to sign UCAN invocations. Create one using `w3 key create`. See: https://github.com/web3-storage/w3cli#w3_principal'
+    description: 'The base64 encoded key to use to sign UCAN invocations. Create one using `storacha key create`. See: https://github.com/storacha/upload-service/tree/main/packages/cli#storacha_principal'
     required: true
 
   proof:
-    description: 'A base64 encoded UCAN delegating capabilities the secret signing key above. Create using `w3 delegation create --base64`'
+    description: 'A base64 encoded UCAN delegating capabilities the secret signing key above. Create using `storacha delegation create --base64`'
     required: true
 
   hidden:
@@ -40,28 +40,28 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - run: npm install -g @web3-storage/w3cli
+    - run: npm install -g @storacha/cli
       shell: bash
 
-    - run: w3 space add ${{ inputs.proof }}
+    - run: storacha space add ${{ inputs.proof }}
       env:
-        W3_PRINCIPAL: ${{ inputs.secret_key }}
+        STORACHA_PRINCIPAL: ${{ inputs.secret_key }}
       shell: bash
 
-    - run: w3 up ${{ inputs.path_to_add }} --json --hidden=${{ inputs.hidden }} --wrap=${{ inputs.wrap }} | tee ./w3_up_output.json
+    - run: storacha up ${{ inputs.path_to_add }} --json --hidden=${{ inputs.hidden }} --wrap=${{ inputs.wrap }} | tee ./storacha_up_output.json
       env:
-        W3_PRINCIPAL: ${{ inputs.secret_key }}
+        STORACHA_PRINCIPAL: ${{ inputs.secret_key }}
       shell: bash
     
-    # expect `./w3_up_output.json` to contain "{ "root": { "/":  "bafy..." }}
+    # expect `./storacha_up_output.json` to contain "{ "root": { "/":  "bafy..." }}
     - name: fail if no CID in response
-      run: jq --exit-status --raw-output '.root."/"' ./w3_up_output.json
+      run: jq --exit-status --raw-output '.root."/"' ./storacha_up_output.json
       shell: bash
 
     - id: get_cid
-      run: echo "cid=$(jq --exit-status --raw-output '.root."/"' ./w3_up_output.json)" >> "$GITHUB_OUTPUT"
+      run: echo "cid=$(jq --exit-status --raw-output '.root."/"' ./storacha_up_output.json)" >> "$GITHUB_OUTPUT"
       shell: bash
 
     - id: get_url
-      run: echo "url=https://${{ steps.get_cid.outputs.cid }}.ipfs.w3s.link" >> "$GITHUB_OUTPUT"
+      run: echo "url=https://${{ steps.get_cid.outputs.cid }}.ipfs.storacha.link" >> "$GITHUB_OUTPUT"
       shell: bash

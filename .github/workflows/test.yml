@@ -17,8 +17,8 @@ jobs:
       id: run1
       with:
         path_to_add: 'test/fixtures'
-        proof: ${{ secrets.W3_PROOF }}
-        secret_key: ${{ secrets.W3_PRINCIPAL }}
+        proof: ${{ secrets.STORACHA_PROOF }}
+        secret_key: ${{ secrets.STORACHA_PRINCIPAL }}
 
     - name: test run 1 output
       run: echo "unexpected output cid ${{ steps.run1.outputs.cid }}" && exit 1
@@ -30,8 +30,8 @@ jobs:
       with:
         wrap: false
         path_to_add: 'test/fixtures'
-        proof: ${{ secrets.W3_PROOF }}
-        secret_key: ${{ secrets.W3_PRINCIPAL }}
+        proof: ${{ secrets.STORACHA_PROOF }}
+        secret_key: ${{ secrets.STORACHA_PRINCIPAL }}
 
     - name: test run 2 output
       run: echo "unexpected output cid ${{ steps.run2.outputs.cid }}" && exit 1
@@ -43,8 +43,8 @@ jobs:
       with:
         hidden: true
         path_to_add: 'test/fixtures'
-        proof: ${{ secrets.W3_PROOF }}
-        secret_key: ${{ secrets.W3_PRINCIPAL }}
+        proof: ${{ secrets.STORACHA_PROOF }}
+        secret_key: ${{ secrets.STORACHA_PRINCIPAL }}
 
     - name: test run 3 output
       run: echo "unexpected output cid ${{ steps.run3.outputs.cid }}" && exit 1
