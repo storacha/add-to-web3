@@ -52,9 +52,9 @@ The capabilies `space/blob/add`, `space/index/add`, `filecoin/offer`, and `uploa
 
 To recap:
 
-- Use the `key` value from the output of `w3 key create --json` as the `secret_key` for this action.
-- Use the `did` value from that output as the audience for `w3 delegation create <audience>` shown above.
-- Use the output of `w3 delegation create <audience> --base64` as the `proof` for this action.
+- Use the `key` value from the output of `storacha key create --json` as the `secret_key` for this action.
+- Use the `did` value from that output as the audience for `storacha delegation create <audience>` shown above.
+- Use the output of `storacha delegation create <audience> --base64` as the `proof` for this action.
 
 ## Inputs
 
@@ -66,7 +66,7 @@ To recap:
 
 **Required** The base64 encoded key to use to sign UCAN invocations to web3.storage. 
 
-Create one using `w3 key create`. See: https://github.com/storacha/upload-service/tree/main/packages/cli#storacha_principal
+Create one using `storacha key create`. See: https://github.com/storacha/upload-service/tree/main/packages/cli#storacha_principal
 
 ### `proof`
 
@@ -75,7 +75,7 @@ Create one using `w3 key create`. See: https://github.com/storacha/upload-servic
 Create a proof using w3cli, delegating `space/blob/add`, `space/index/add`, `filecoin/offer`, and `upload/add`
 
 ```shell
-$ AUDIENCE_DID="<the DID for secret_key created by `w3 key create`>"
+$ AUDIENCE_DID="<the DID for secret_key created by `storacha key create`>"
 $ storacha delegation create $AUDIENCE_DID  -c space/blob/add -c space/index/add -c filecoin/offer -c upload/add --base64`
 ```
 
