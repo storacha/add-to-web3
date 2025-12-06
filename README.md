@@ -7,7 +7,7 @@ A lightweight wrapper around [the Storacha CLI tool]. As a [composite](https://d
 ## Usage
 
 ```yaml
-uses: storacha/add-to-web3@v4
+uses: storacha/add-to-web3@v3
 id: storacha
 with:
   path_to_add: 'dist'
